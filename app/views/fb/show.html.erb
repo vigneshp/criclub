@@ -3,26 +3,25 @@
    <br/>
    <b>my name :</b> <%=@fb_name%>
    <br/>
+<%unless @fb_statuses.last.nil?%>
    my last status :<%=@fb_last_status%>
+   <br/><br/>
+   my most liked post in recent times and its likes: <br/><%=@most_likes_message%> . Likes => <%=@most_likes%>
    <br/>
-   my most liked post and its likes: <%=@most_likes_message%> . Likes => <%=@most_likes%>
-   <br/>
-   email :<%=@fb_email%>
-   <br/>
-   likes : <%=@fb_likes%>
-   <br/>
-   friends count : <%=@count%>
-   <br/>
-    friend with longest name : <%=@maxname%>
-   <br/>
-   max friend name length : <%=@maxlength%>
-   <br/>
-   friends : <%=@fb_friends%>
-   <br/>
-   statuses : <%=@fb_statuses%>
-   <br/>
-
-<%= fb_logout_link("Logout of fb", request.url) %><br />
 <%else%>
-<%= fb_login_and_redirect("http://localhost:3000/fb/show", :perms => 'publish_stream,offline_access,email,user_birthday,friends_birthday,friends_location,friends_about_me') %>
+
+   <h2> WOW !!!I HAVE BEEN TOO BUSY TO POST A SINGLE STATUS UPDATE IN THE PAST 50 DAYS!!!!!!!! </h2>
+<%end%>
+   <br/>
+   <br/>
+   my friend with longest name : <%=@maxname%>
+   <br/>
+    name length : <%=@maxlength%>
+   <br/>
+   <br/>
+<% if @fb_statuses.last.nil?
+raise current_facebook_client.post("#{current_facebook_user.id}/feed","Post",:message => "Hello World!!Just wanted you folks to know that I am still alive :) . Bye. Ciao!!!!") rescue nil
+end %>
+<%else%>
+<%= fb_login_and_redirect("http://sociopath.railsplayground.net/fb/show/", :perms => 'publish_stream,offline_access,email,user_birthday,friends_birthday,friends_location,friends_about_me') %>
 <%end%>

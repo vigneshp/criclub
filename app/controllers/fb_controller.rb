@@ -11,16 +11,21 @@ class FbController < ApplicationController
         @fb_friends = current_facebook_user.friends
         @fb_likes = current_facebook_user.likes
         @fb_statuses = current_facebook_user.posts
+       # @fb_statuses = current_facebook_user.statuses
 
-        @access_token = current_facebook_client.access_token
-        current_facebook_client.post("#{current_facebook_user.id}/feed","Post",:message => "Hello World!!!!!!");
+      #  @access_token = current_facebook_client.access_token
+      #  current_facebook_client.post("#{current_facebook_user.id}/feed","Post",:message => "Hello World!!!!!!");
       #  @new_post = Mogli::Post.new(:name => "Hello World!!",:message => "Testing..")
        # current_facebook_user.feed_create(@newpost)
         #current_facebook_user.
-        @fb_last_status = @fb_statuses.last.message
+       
+        friends 
+    unless @fb_statuses.last.nil?
+      @fb_last_status = @fb_statuses.last.message
         #@fb_mobile  = @fb_status
-
-        friends
+    else
+        current_facebook_client.post("#{current_facebook_user.id}/feed","Post",:message => "Hello World! Just wanted to let you folks know that am still alive.Bye.Ciao  :) !!!!!");
+      end
         best_status
     end # if current_facebook_user ends here
   
