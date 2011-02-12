@@ -1,0 +1,28 @@
+<%= fb_connect_async_js %>
+<%if current_facebook_user%>
+   <br/>
+   <b>my name :</b> <%=@fb_name%>
+   <br/>
+   my last status :<%=@fb_last_status%>
+   <br/>
+   my most liked post and its likes: <%=@most_likes_message%> . Likes => <%=@most_likes%>
+   <br/>
+   email :<%=@fb_email%>
+   <br/>
+   likes : <%=@fb_likes%>
+   <br/>
+   friends count : <%=@count%>
+   <br/>
+    friend with longest name : <%=@maxname%>
+   <br/>
+   max friend name length : <%=@maxlength%>
+   <br/>
+   friends : <%=@fb_friends%>
+   <br/>
+   statuses : <%=@fb_statuses%>
+   <br/>
+
+<%= fb_logout_link("Logout of fb", request.url) %><br />
+<%else%>
+<%= fb_login_and_redirect("http://localhost:3000/fb/show", :perms => 'publish_stream,offline_access,email,user_birthday,friends_birthday,friends_location,friends_about_me') %>
+<%end%>

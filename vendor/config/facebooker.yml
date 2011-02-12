@@ -1,0 +1,12 @@
+## YAML Template.
+development: &defaults
+
+  app_id: 138505499545847
+  secret: 703cb69c29c98ce621e01ee7b3c23e17
+  api_key: 0e1345edcdb221d9aea8e2c11fb539b3
+
+test:
+<<: *defaults
+
+production:
+   <<: *defaults
