@@ -3,7 +3,9 @@ class FbController < ApplicationController
   before_filter :accesstoken
 
   def accesstoken
-     if current_facebook_user.nil?
+    @url = "http://sociopath.railsplayground.net/fb/show/"
+    #@url = "http://localhost:3000/fb/show/"
+    if current_facebook_user.nil?
        redirect_to  link_url
      else
        session[:user_id] = current_facebook_client.access_token
@@ -12,9 +14,9 @@ class FbController < ApplicationController
   end
 
   def link_url
-    #@url = "http://localhost:3000/fb/show/"
-    @url = "http://sociopath.railsplayground.net/fb/show/"
-    @login_url = "http://apps.facebook.com/criclub"
+    
+    #@login_url = "http://apps.facebook.com/criclub"
+    fb_login_and_redirect("#{@url}", :perms => 'publish_stream,offline_access,email,friends_about_me')
   end
 
   def show
