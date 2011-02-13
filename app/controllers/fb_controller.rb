@@ -1,4 +1,22 @@
 class FbController < ApplicationController
+
+  before_filter :accesstoken
+
+  def accesstoken
+     if current_facebook_user.nil?
+       redirect_to  link_url
+     else
+       session[:user_id] = current_facebook_client.access_token
+    end
+
+  end
+
+  def link_url
+    #@url = "http://localhost:3000/fb/show/"
+    @url = "http://sociopath.railsplayground.net/fb/show/"
+    @login_url = "http://apps.facebook.com/criclub"
+  end
+
   def show
      if current_facebook_user # never true initially
         @fb_id = current_facebook_user.id
@@ -24,7 +42,7 @@ class FbController < ApplicationController
       @fb_last_status = @fb_statuses.last.message
         #@fb_mobile  = @fb_status
     else
-        current_facebook_client.post("#{current_facebook_user.id}/feed","Post",:message => "Hello World! Just wanted to let you folks know that am still alive.Bye.Ciao  :) !!!!!");
+        #current_facebook_client.post("#{current_facebook_user.id}/feed","Post",:message => "Hello World! Just wanted to let you folks know that am still alive.Bye.Ciao  :) !!!!!");
       end
         best_status
     end # if current_facebook_user ends here

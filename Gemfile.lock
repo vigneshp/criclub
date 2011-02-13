@@ -87,6 +87,3 @@ DEPENDENCIES
   mogli
   rails (= 3.0.0)
   sqlite3-ruby
-
-METADATA
-  version: 1.0.6
