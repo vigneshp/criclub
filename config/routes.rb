@@ -1,4 +1,11 @@
 Fb2::Application.routes.draw do
+
+  get "session/login"
+
+  get "session/logout"
+
+  resources :users
+
   get "fb/show"
 
   # The priority is based upon order of creation:

@@ -1,30 +1,18 @@
 class FbController < ApplicationController
+  before_filter :ensure_authenticated_to_facebook
 
-  before_filter :accesstoken
-
-  def accesstoken
-    @url = "http://sociopath.railsplayground.net/fb/show/"
-    #@url = "http://localhost:3000/fb/show/"
-    if current_facebook_user.nil?
-       redirect_to  link_url
-     else
-       session[:user_id] = current_facebook_client.access_token
-    end
-
+  def ensure_authenticated_to_facebook
+   @url = "http://localhost:3000/fb/show/"
+   if current_user == nil
+     logger.info "current user is nil"
+     redirect_to :controller=>'session', :action=>'login'
+   end
   end
 
-  def link_url
-    
-    #@login_url = "http://apps.facebook.com/criclub"
-    fb_login_and_redirect("#{@url}", :perms => 'publish_stream,offline_access,email,friends_about_me')
-  end
 
   def show
      if current_facebook_user # never true initially
         @fb_id = current_facebook_user.id
-            
-         #newton = Facebooker2::Rails::Controller.new
-       #cookiehash = newton.fb_set_cookie(nil,nil,nil)
         current_facebook_user.fetch
         @fb_email = current_facebook_user.email
         @fb_name = current_facebook_user.first_name
