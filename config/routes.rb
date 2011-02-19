@@ -1,8 +1,18 @@
 Fb2::Application.routes.draw do
 
+  #match "/session/create", :controller=>"session", :action=>"create"
+  root :to => "session#index"
+ # root :to => "fb#show"
+
+  get "session/index"
+  
+  get "session/create"
+
   get "session/login"
 
   get "session/logout"
+
+  get "session/new"
 
   resources :users
 

@@ -1,17 +1,22 @@
 class FbController < ApplicationController
-  before_filter :ensure_authenticated_to_facebook
+  #before_filter :ensure_authenticated_to_facebook
 
   def ensure_authenticated_to_facebook
    @url = "http://localhost:3000/fb/show/"
+    
    if current_user == nil
      logger.info "current user is nil"
-     redirect_to :controller=>'session', :action=>'login'
+     redirect_to :controller=>'session', :action=>'new'
    end
+   
   end
 
 
   def show
-     if current_facebook_user # never true initially
+
+    logger.info("current facebook user is " +@current_facebook_user)
+    if !@current_facebook_user.nil? # never true initially
+      current_facebook_user = @current_facebook_user
         @fb_id = current_facebook_user.id
         current_facebook_user.fetch
         @fb_email = current_facebook_user.email

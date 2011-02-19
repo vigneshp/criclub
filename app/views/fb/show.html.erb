@@ -27,5 +27,5 @@
 raise current_facebook_client.post("#{current_facebook_user.id}/feed","Post",:message => "HelloooWorld!!Just wanted you folks to know that I am still alive :) . Bye. Ciao!!!!") rescue nil
 end %>
 <%else%>
-<%= fb_login_and_redirect("#{@url}", :perms => 'publish_stream,offline_access,email,friends_about_me') %>
+<%= fb_login_and_redirect("#{@url}", :perms => 'publish_stream,offline_access,email,friends_about_me' , ':show-faces' => "true") %>
 <%end%>
