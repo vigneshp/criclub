@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+ # protect_from_forgery
   include Facebooker2::Rails::Controller
   def current_user
     if session[:at]
