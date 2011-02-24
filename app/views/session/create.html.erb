@@ -4,3 +4,22 @@
 %>
 
 <h4> Hello <%=@user%> !!!!</h4>
+   <br/>
+<%unless @fb_statuses.last.nil?%>
+  
+ <%if @most_likes > 0 %>
+   <b> my most popular post and its likes: </b><br/><%=  @most_liked_post %> . Likes => <%=@most_likes%>
+   <br/>
+ <%else%>
+    <h2> <font color="red">DRAT !!!NONE OF MY FRIENDS CARED TO 'LIKE' A SINGLE WALL POST IN THE PAST 50 DAYS :( !!!!!!!! </font></h2>
+ <%end%>
+<%else%>
+
+   <h2> <font color="red">WOW !!!I HAVE BEEN TOO BUSY TO POST A SINGLE WALL POST IN THE PAST 50 DAYS!!!!!!!! </font></h2>
+<%end%>
+   <br/>
+   <br/>
+   <b>my friend with longest name : </b><%=@maxname%>
+   <br/>
+   <b>name length : </b><%=@maxlength%>
+   <br/>
