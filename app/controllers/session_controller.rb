@@ -1,5 +1,5 @@
 require "cgi"
-class SessionController < ApplicationController
+class SessionController < CommentsController
 
   before_filter :global_vars 
 
@@ -7,8 +7,8 @@ class SessionController < ApplicationController
    @app_id = "138505499545847"
    @app_secret = "703cb69c29c98ce621e01ee7b3c23e17"
    @app_url =  "http://apps.facebook.com/vickipedia"
-  # @redirect_url = "http://localhost:3000/session/create/"
-   @redirect_url = "http://sociopath.railsplayground.net/session/create"
+   @redirect_url = "http://localhost:3000/session/create/"
+  # @redirect_url = "http://sociopath.railsplayground.net/session/create"
    @perms = "read_stream"
    @authorize_url = "https://www.facebook.com/dialog/oauth?client_id=138505499545847&redirect_uri=#{@redirect_url}&scope=#{@perms}&display=page"
   end
@@ -26,7 +26,7 @@ class SessionController < ApplicationController
      new
     else
     if !session[:at].nil?
-       index
+      index #     render :controller=>"comment" , :action => "index"
     else
     logger.info("create inside..............................." + params[:code])
     mogli_client = Mogli::Client.create_from_code_and_authenticator(params[:code],authenticator)
@@ -34,13 +34,15 @@ class SessionController < ApplicationController
     session[:at]=mogli_client.access_token
     @access_tok = session[:at]
     logger.info("inside creae.............." + session[:at])
+
     redirect_to @app_url
     #index
     end
     end
   end
 
-  def index
+=begin
+def index
     redirect_to "/session/login" and return unless session[:at]
     logger.info("entered index :) ...." + session[:at])
     user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
@@ -56,6 +58,8 @@ class SessionController < ApplicationController
    # redirect_to :controller => :fb , :action => :show
     session[:at] = nil
   end
+=end
+
 
   def most_liked_post
     return if @most_likes <= 0

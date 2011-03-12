@@ -3,23 +3,23 @@
 # and open the template in the editor.
 %>
 
-<h4> Hello <%=@user%> !!!!</h4>
-   <br/>
-<%unless @fb_statuses.last.nil?%>
-  
- <%if @most_likes > 0 %>
-   <b> my most popular post and its likes: </b><br/><%=  @most_liked_post %> . Likes => <%=@most_likes%>
-   <br/>
- <%else%>
-    <h2> <font color="red">DRAT !!!NONE OF MY FRIENDS CARED TO 'LIKE' A SINGLE WALL POST IN THE PAST 50 DAYS :( !!!!!!!! </font></h2>
- <%end%>
-<%else%>
 
-   <h2> <font color="red">WOW !!!I HAVE BEEN TOO BUSY TO POST A SINGLE WALL POST IN THE PAST 50 DAYS!!!!!!!! </font></h2>
-<%end%>
-   <br/>
-   <br/>
-   <b>my friend with longest name : </b><%=@maxname%>
-   <br/>
-   <b>name length : </b><%=@maxlength%>
-   <br/>
+<span id="comments_count"><%= pluralize(@comments.count, "Comment") %></span>
+<div id="comments">
+  <%= render :partial => @comments, :locals => { :list => true } %>
+</div>
+
+<h4> Hello <%=@user%> !!!!</h4>
+<!--
+
+-->
+<br />
+
+
+<% form_for Comment.new, :remote => true do |f| %>
+  <%= f.hidden_field(:user1_id, :value => "Rajesh")  %>
+       <%= f.label :content, "Comment" %><br />
+	<%= f.text_area :content, :rows => 8 %><br />
+	<%= f.submit "Add comment" %>
+<% end %>
+

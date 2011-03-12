@@ -1,5 +1,9 @@
 Fb2::Application.routes.draw do
 
+  resources :comments
+
+  resources :user1s
+
   match "/session/create", :controller=>"session", :action=>"create"
 
   root :to => "session#index"
