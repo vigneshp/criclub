@@ -1,0 +1,14 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<%= div_for comment do %>
+  <span class="dateandoptions">
+    Posted <%=time_ago_in_words(comment.created_at)%> ago<br />
+		<%= link_to 'Delete', comment_path(comment), :method => :delete, :class => "delete", :remote => true  %>
+  </span>
+	<p><b><%= comment.user1_id %></b> wrote:</p>
+	<br />
+  <%= content_tag(:p, comment.content, :class => "comment-body") %>
+<% end %>

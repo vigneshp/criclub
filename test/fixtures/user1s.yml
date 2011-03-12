@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  email: MyString
+  access_token: MyString
+  extra1: MyString
+  extra2: MyString
+
+two:
+  name: MyString
+  email: MyString
+  access_token: MyString
+  extra1: MyString
+  extra2: MyString
