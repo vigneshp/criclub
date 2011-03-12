@@ -81,7 +81,14 @@ def index
     redirect_to "/comments/session_login" and return
    end
     logger.info("entered index :) ...." + session[:at])
-    user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
+  begin
+  user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
+   rescue Mogli::Client::OAuthException => exc
+     logger.error("Message for the log file #{exc.message}")
+     session[:at]=nil;
+   redirect_to(:action => 'index') and return
+
+    end
     @user = user
    @comments = Comment.all
     respond_to do |format|

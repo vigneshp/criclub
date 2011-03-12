@@ -9,9 +9,8 @@
 
 <h2>Say something!</h2>
 <% form_for Comment.new, :remote => true do |f| %>
-	<%= f.label :name, "Your name" %><br />
-	<%= f.text_field :name %><br />
-	<%= f.label :body, "Comment" %><br />
-	<%= f.text_area :body, :rows => 2 %><br />
+	 <%= f.hidden_field(:user_id, :value => @user)  %>
+	<%= f.label :content, "Comment" %><br />
+	<%= f.text_area :content, :rows => 4 %><br />
 	<%= f.submit "Add comment" %>
 <% end %>
