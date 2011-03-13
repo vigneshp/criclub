@@ -10,20 +10,22 @@
 
  <!-- Make changes here to get the correct pic -->
 
-    <a href="http://wwww.facebook.com/profile.php?id=<%=comment.user_id%>" target="_blank" > <img src= <%=@temp.extra1%>> </img> </a>
+    
 
     <!-- End of profile pic -->
 
     <!-- Delete link -->
 
     <!-- Admins have special privilages to delete messages Rajesh , Vignesh -->
+   
   <% if (comment.user_id) == @user.id || @user.id == "694081777" || @user.id == "1131990070" %>
   <%= link_to 'Delete', comment_path(comment), :method => :delete, :class => "delete", :remote => true  %>
 
 <% end %>
     <!-- End of Delete link -->
   </span>
-	<b><%= @temp.name %></b> wrote:
-	
+ 
+	<a href="http://wwww.facebook.com/profile.php?id=<%=comment.user_id%>" target="_blank" > <img src= <%=@temp.extra1%>> </img> </a>
+<b><%= @temp.name %></b> :
   <%= content_tag(:p, comment.content, :class => "comment-body") %>
 <% end %>

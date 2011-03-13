@@ -104,18 +104,25 @@ def index
 end
   
 def create
-@comment = Comment.create!(params[:comment])
 
+if params[:comment][:content].lstrip.rstrip == ""
+  flash[:notice] = "No Blank commenting"
   
+else
+  @comment = Comment.create!(:content => params[:comment][:content].lstrip.rstrip , :user_id => params[:comment][:user_id])
+
+
    @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
 
 # @user_id = (User.where(:extra2 => params[:comment][:user_id])).first.name
 
-  
-   #logger.info(@user1.first.name+"////////////////////////////");
+
+  # logger.info(@user1.first.name+"////////////////////////////");
 #logger.info("--------------------------")
 
     flash[:notice] = "Thanks for commenting!"
+end
+
     respond_to do |format|
       format.html { redirect_to comments_path }
       format.js 
