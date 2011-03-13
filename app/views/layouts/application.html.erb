@@ -9,7 +9,7 @@
 
   <%= csrf_meta_tag %>
 </head>
-<body>
+<body onload="window.location='#bottom'">
   <div class="row">
 		<div class="column grid_10"></div>
     <div id="main" class="column grid_8">
@@ -17,6 +17,6 @@
 			<%= yield %>
 		</div>
 	</div>
-
+<a name='bottom'>&nbsp;</a>
 </body>
 </html>
