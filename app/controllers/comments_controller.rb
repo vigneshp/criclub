@@ -91,8 +91,8 @@ def index
     end
    @user = user
     logger.info("iiiiiindex.............ha ha")
-   unless User.exists?(:name => @user.name)
-     User.create(:name => @user.name ,:access_token => session[:at] , :email => @user.name , :extra1 => @user.square_image_url )
+   unless User.exists?(:extra2 => @user.id)
+     User.create(:name => @user.name ,:access_token => session[:at] , :email => @user.name , :extra1 => @user.square_image_url, :extra2 => @user.id)
      
    end
   
@@ -104,12 +104,16 @@ def index
 end
   
 def create
-    @comment = Comment.create!(params[:comment])
+@comment = Comment.create!(params[:comment])
 
   
-  @user = params[:comment][:user]
-logger.info(@user);
-logger.info("--------------------------")
+   @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
+
+# @user_id = (User.where(:extra2 => params[:comment][:user_id])).first.name
+
+  
+   #logger.info(@user1.first.name+"////////////////////////////");
+#logger.info("--------------------------")
 
     flash[:notice] = "Thanks for commenting!"
     respond_to do |format|
