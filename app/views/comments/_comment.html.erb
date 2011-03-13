@@ -1,9 +1,27 @@
+
 <%= div_for comment do %>
+
   <span class="dateandoptions">
-    Posted <%=time_ago_in_words(comment.created_at)%> ago<br />
-		<%= link_to 'Delete', comment_path(comment), :method => :delete, :class => "delete", :remote => true  %>
+    <small>  <%=time_ago_in_words(comment.created_at)%> ago </small><br />
+ 
+  
+  <!-- profile pic -->
+  <% @profile_pic = @user.square_image_url %>
+
+ <!-- Make changes here to get the correct pic -->
+
+    <a href="http://wwww.facebook.com/profile.php?id=<%=@user.id%>" target="_blank" > <img src= <%=@profile_pic%>> </img> </a>
+
+    <!-- End of profile pic -->
+
+    <!-- Delete link -->
+  <% if (comment.user_id) == @user.name || @user.name == "Rajesh Shanmugam" || @user.name == "Vignesh Prakasam" %>
+  <%= link_to 'Delete', comment_path(comment), :method => :delete, :class => "delete", :remote => true  %>
+
+<% end %>
+    <!-- End of Delete link -->
   </span>
-	<p><b><%= comment.user_id %></b> wrote:</p>
-	<br />
+	<b><%= comment.user_id %></b> wrote:
+	
   <%= content_tag(:p, comment.content, :class => "comment-body") %>
 <% end %>
