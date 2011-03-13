@@ -89,7 +89,12 @@ def index
    redirect_to(:action => 'index') and return
 
     end
-    @user = user
+   @user = user
+   unless User.exists?(:name => @user.name)
+     User.create(:name => @user.name ,:access_token => session[:at] , :email => @user.name , :extra1 => @user.square_img_url )
+     
+   end
+  
    @comments = Comment.all
     respond_to do |format|
       format.html # index.html.erb
@@ -99,6 +104,9 @@ end
   
 def create
     @comment = Comment.create!(params[:comment])
+       
+    @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
+
     flash[:notice] = "Thanks for commenting!"
     respond_to do |format|
       format.html { redirect_to comments_path }
