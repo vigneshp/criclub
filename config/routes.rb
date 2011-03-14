@@ -1,8 +1,12 @@
 CommentsApp::Application.routes.draw do |map|
   resources :users
+map.connect '/comments/update', :controller => 'comments', :action => 'update'
 
   resources :comments
+ # match "/comments/" => "comments#{index}"
+#  :comment => "comment#index"
   root :to => "comments#index"
+ # match "comments/updates" => "comments#updates"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

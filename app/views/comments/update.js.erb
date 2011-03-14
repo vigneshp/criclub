@@ -1,0 +1,24 @@
+<%#
+# To change this template, choose Tools | Templates
+# and open the template in the editor.
+%>
+
+<%  @comments.each  do |@comment| %>
+
+
+/* Replace the count of comments */
+$("#comments_count").html("<%= pluralize(Comment.count, 'Comment') %>");
+
+/* Add the new comment to the bottom of the comments list */
+
+<% unless @comment.nil? %>
+$("#comments").append("<%= escape_javascript(render(@comment))  %>");
+
+/* Highlight the new comment */
+$("#comment_<%= @comment.id %>").effect("highlight", {}, 3000);
+
+/* Reset the comment form */
+$("#new_comment")[0].reset();
+<% end %>
+
+<% end %>
