@@ -1,3 +1,13 @@
+<head>
+<script type="text/javascript">
+window.onload = function() {
+  delay_update();
+}
+</script>
+
+</head>
+
+
 <span id="comments_count"><%= pluralize(@comments.count, "Comment") %></span>
 <div id="comments">
   <%= render :partial => @comments, :locals => { :list => true } %>
@@ -21,7 +31,7 @@
 <h2>Say something!</h2>
 
 
-<%= form_for Comment.new, :remote => true do |f| %>
+<%= form_for Comment.new, :remote => true  do |f| %>
 	 <%= f.hidden_field(:user_id, :value => @user.id )  %>
 
 	<%= f.label :content, "Comment" %><br />
@@ -29,7 +39,7 @@
 	<%= f.submit "Add comment" %>
 <% end %>
 
-<% form_for Comment.new , :remote => true ,:url => { :action => "update" } do |f| %>
+<% form_for Comment.new , :remote => true , :url => { :action => "update" } do |f| %>
         
-        <%= f.submit "update" %>
+        <%= f.submit "update chats" , :id => "comment_update" %>
 <% end %>
