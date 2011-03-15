@@ -6,7 +6,7 @@ map.connect '/comments/update', :controller => 'comments', :action => 'update'
  # match "/comments/" => "comments#{index}"
 #  :comment => "comment#index"
   root :to => "comments#index"
- # match "comments/updates" => "comments#updates"
+  #match "iframe_src" => "comments#iframe_src"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

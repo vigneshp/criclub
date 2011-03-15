@@ -1,18 +1,24 @@
 <head>
 <script type="text/javascript">
 window.onload = function() {
-  delay_update();
+  //delay_update();
 }
 </script>
 
 </head>
 
-
+<!-- number of comments
 <span id="comments_count"><%= pluralize(@comments.count, "Comment") %></span>
-<div id="comments">
+-->
+<!--
+<iframe id='upload_frame' name="upload_frame" >
+  <p>Your browser does not support iframes.</p>
+</iframe>
+-->
+
+<div id="comments" class="chatbox" style="max-height:300px;overflow:auto;">
   <%= render :partial => @comments, :locals => { :list => true } %>
 </div>
-
 <hr />
 <!-- Widget starts here -->
 <!-- No commentry but fast 
@@ -28,14 +34,12 @@ window.onload = function() {
 <!-- Widget ends here -->
 <div id="comment-notice"></div>
 
-<h2>Say something!</h2>
 
-
-<%= form_for Comment.new, :remote => true  do |f| %>
+<%= form_for Comment.new , :remote => true  do |f| %>
 	 <%= f.hidden_field(:user_id, :value => @user.id )  %>
 
 	<%= f.label :content, "Comment" %><br />
-	<%= f.text_area :content, :rows => 4 %><br />
+	<%= f.text_area :content, :rows => 2 , :class => "chatbox"%><br />
 	<%= f.submit "Add comment" %>
 <% end %>
 

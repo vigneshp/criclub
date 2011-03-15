@@ -97,6 +97,10 @@ div.flash.notice
   border-radius: 5px;
 }
 
+.chatbox
+{
+    width: 67%;
+}
 .comment
 {
   display: block;
@@ -105,8 +109,10 @@ div.flash.notice
   -webkit-border-radius: 5px;
   border-radius: 5px;
   padding: 10px;
-  margin: 10px;
-  width: 400px;
+  margin: 1px;
+  width: 66%;
+  font-size: x-small;
+    
 }
 
 .dateandoptions
