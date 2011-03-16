@@ -19,7 +19,7 @@
     <!-- End of Delete link -->
   </span>
  <!-- Profilepic-->
-	<!--<a href="http://wwww.facebook.com/profile.php?id=<%=comment.user_id%>" target="_blank" > <img src= <%=@temp.extra1%>> </img> </a> -->
+	<a href="http://wwww.facebook.com/profile.php?id=<%=comment.user_id%>" target="_blank" > <img src= <%=@temp.extra1%>> </img> </a> 
   <!-- End of profile pic -->
 <b><a href="http://wwww.facebook.com/profile.php?id=<%=comment.user_id%>" target="_blank" style="text-decoration:none;" ><%= @temp.name %> </a>: </b>
   <%= content_tag(:p, comment.content, :class => "comment-body") %>

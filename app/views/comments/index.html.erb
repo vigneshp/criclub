@@ -43,7 +43,15 @@ window.onload = function() {
 	<%= f.submit "Add comment" %>
 <% end %>
 
+         <span id="update_form">
 <% form_for Comment.new , :remote => true , :url => { :action => "update" } do |f| %>
-        
+ 
+<% if @last_comment.nil? %>
+           <%= f.hidden_field(:time , :value => 0) %>
+      <% else %>
+  <%= f.hidden_field(:time , :value => @last_comment.created_at) %>
+           <% end %>
+     
         <%= f.submit "update chats" , :id => "comment_update" %>
 <% end %>
+       </span>

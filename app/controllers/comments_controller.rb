@@ -97,6 +97,9 @@ class CommentsController < ApplicationController
     end
   
     @comments = Comment.all
+    @last_comment=Comment.find(:first , :order =>'created_at desc');
+    #logger.info(@last_comment.created_at.to_s);
+    
     respond_to do |format|
       format.html # index.html.erb
       format.rss
@@ -131,6 +134,7 @@ class CommentsController < ApplicationController
 
   def update
     @comments = Comment.all
+    @last_comment_time = Comment.find(:first , :order =>'created_at desc').created_at.to_s
     @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
     respond_to do |format|
       format.html { redirect_to comments_path }
