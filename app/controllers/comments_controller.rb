@@ -97,16 +97,15 @@ class CommentsController < ApplicationController
     end
   
     @comments = Comment.find(:all, :order =>'created_at' , :limit => 20)
+    
+    unless @comments.nil?
     @last_comment_time=@comments.last.created_at;
     @first_comment_time = @comments.first.created_at ;
-
+    end
   #  logger.info(@last_comment_time)
   #  logger.info(@first_comment_time)
     
-  
-  
-  
-    #logger.info(@last_comment.created_at.to_s);
+      #logger.info(@last_comment.created_at.to_s);
     
     respond_to do |format|
       format.html # index.html.erb
@@ -154,7 +153,9 @@ class CommentsController < ApplicationController
   # change here
 
     #@comments = Comment.where('created_at > '+@last_time.to_s)
-    @last_comment_time = @comment.first.created_at
+    
+    @last_comment_time = @comments.first.created_at if @comments.nil?
+    
     @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
 
     
@@ -171,7 +172,8 @@ class CommentsController < ApplicationController
     @comments  = Comment.all
 #change here
 
-    @first_comment_time = @comment.last.created_at
+    @first_comment_time = @comments.last.created_at if @comments.nil?
+
     @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
     respond_to do |format|
       format.html { redirect_to comments_path }
