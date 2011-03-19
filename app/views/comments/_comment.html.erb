@@ -4,23 +4,32 @@
   <span class="dateandoptions" >
     <small>  <%=time_ago_in_words(comment.created_at)%> ago </small><br />
 
-  <% @temp = (User.where(:extra2 => comment.user_id)).first %>
-  <!-- profile pic -->
-  <% @profile_pic = @temp.extra1 %>
+    <% @temp = (User.where(:extra2 => comment.user_id)).first %>
+    <%  @profile_pic = @temp.extra1  %>
+
+    <!-- block user -->
+    <% if @user.id == "694081777" || @user.id == "1131990070" %>
+
+    <!-- Add more to check the time -->
+    <% if @temp.blocked == "1" %>
+        <%= link_to 'unblock' , edit_user_path(comment.user_id) , :method => :edit , :class => "block"  %>
+      <% else %>
+        <%= link_to 'block' , edit_user_path(comment.user_id) , :method => :edit , :class => "block"  %>
+      <% end %>
+    <% end %>
 
     <!-- Delete link -->
-
     <!-- Admins have special privilages to delete messages Rajesh , Vignesh -->
 
-  <% if (comment.user_id) == @user.id || @user.id == "694081777" || @user.id == "1131990070" %>
-  <%= link_to 'Delete', comment_path(comment), :method => :delete, :class => "delete", :remote => true  %>
+    <% if (comment.user_id) == @user.id || @user.id == "694081777" || @user.id == "1131990070" %>
+      <%= link_to 'Delete', comment_path(comment), :method => :delete, :class => "delete", :remote => true  %>
 
-<% end %>
+    <% end %>
     <!-- End of Delete link -->
   </span>
- <!-- Profilepic-->
-	<a href="http://wwww.facebook.com/profile.php?id=<%=comment.user_id%>" target="_blank" > <img src= <%=@temp.extra1%>> </img> </a> 
+  <!-- Profilepic-->
+  <a href="http://wwww.facebook.com/profile.php?id=<%=comment.user_id%>" target="_blank" > <img src= <%=@temp.extra1%>> </img> </a>
   <!-- End of profile pic -->
-<b><a href="http://wwww.facebook.com/profile.php?id=<%=comment.user_id%>" target="_blank" style="text-decoration:none;" ><%= @temp.name %> </a>: </b>
+  <b><a href="http://wwww.facebook.com/profile.php?id=<%=comment.user_id%>" target="_blank" style="text-decoration:none;" ><%= @temp.name %> </a>: </b>
   <%= content_tag(:p, comment.content, :class => "comment-body") %>
 <% end %>

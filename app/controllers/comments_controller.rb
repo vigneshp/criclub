@@ -96,8 +96,16 @@ class CommentsController < ApplicationController
      
     end
   
-    @comments = Comment.all
-    @last_comment=Comment.find(:first , :order =>'created_at desc');
+    @comments = Comment.find(:all, :order =>'created_at' , :limit => 20)
+    @last_comment_time=@comments.last.created_at;
+    @first_comment_time = @comments.first.created_at ;
+
+  #  logger.info(@last_comment_time)
+  #  logger.info(@first_comment_time)
+    
+  
+  
+  
     #logger.info(@last_comment.created_at.to_s);
     
     respond_to do |format|
@@ -107,6 +115,10 @@ class CommentsController < ApplicationController
   end
   
   def create
+
+   if User.where(:extra2 => params[:comment][:user_id]).first.blocked == "1"
+   flash[:notice] = "sorry you have been blocked" and return
+   else
     if params[:comment][:content].lstrip.rstrip == ""
       flash[:notice] = "No Blank commenting"
     else
@@ -117,6 +129,8 @@ class CommentsController < ApplicationController
       #logger.info("--------------------------")
       flash[:notice] = "Thanks for commenting!"
     end
+   end
+
     respond_to do |format|
       format.html { redirect_to comments_path }
       format.js 
@@ -133,8 +147,31 @@ class CommentsController < ApplicationController
   end
 
   def update
+    logger.info(params[:comment][:last_time])
+    @last_time = Time.parse(params[:comment][:last_time])
+    logger.info(@last_time)
     @comments = Comment.all
-    @last_comment_time = Comment.find(:first , :order =>'created_at desc').created_at.to_s
+  # change here
+
+    #@comments = Comment.where('created_at > '+@last_time.to_s)
+    @last_comment_time = @comment.first.created_at
+    @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
+
+    
+    respond_to do |format|
+      format.html { redirect_to comments_path }
+      format.js
+    end
+  end
+
+  def more
+    logger.info(params[:comment][:first_time])
+    @last_time = Time.parse(params[:comment][:last_time])
+    logger.info(@last_time)
+    @comments  = Comment.all
+#change here
+
+    @first_comment_time = @comment.last.created_at
     @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
     respond_to do |format|
       format.html { redirect_to comments_path }

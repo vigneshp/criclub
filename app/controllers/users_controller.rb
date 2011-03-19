@@ -34,7 +34,21 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @user = User.find(:first, :conditions => ["extra2 = ?", params[:id]])
+
+    if @user.blocked == "1"
+      if @user.update_attributes(:blocked => "0" , :blocked_time => nil , :blocked_period => nil)
+        flash[:notice] = 'User successfully unblocked'
+      else
+        flash[:notice] = 'Sorry try again'
+      end
+    else
+      if @user.update_attributes(:blocked => "1" , :blocked_time => Time.now , :blocked_period => 20)
+        flash[:notice] = 'User successfully blocked'
+      else
+        flash[:notice] = 'Sorry try again'
+      end
+    end
   end
 
   # POST /users

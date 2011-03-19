@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110312192956) do
+ActiveRecord::Schema.define(:version => 20110319124521) do
 
   create_table "comments", :force => true do |t|
     t.string   "user_id"
@@ -26,6 +26,9 @@ ActiveRecord::Schema.define(:version => 20110312192956) do
     t.string   "extra2"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "blocked"
+    t.datetime "blocked_time"
+    t.integer  "blocked_period"
   end
 
 end

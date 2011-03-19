@@ -1,9 +1,9 @@
 <head>
-<script type="text/javascript">
-window.onload = function() {
-  //delay_update();
-}
-</script>
+  <script type="text/javascript">
+    window.onload = function() {
+      //delay_update();
+    }
+  </script>
 
 </head>
 
@@ -19,7 +19,11 @@ window.onload = function() {
 <div id="comments" class="chatbox" style="max-height:300px;overflow:auto;">
   <%= render :partial => @comments, :locals => { :list => true } %>
 </div>
-<hr />
+
+<div id="panditoftheday">
+
+</div>
+
 <!-- Widget starts here -->
 <!-- No commentry but fast 
 <script type="text/javascript" src="http://cdn.widgetserver.com/syndication/subscriber/InsertWidget.js"></script><script type="text/javascript">if (WIDGETBOX) WIDGETBOX.renderWidget('0f63beb3-c61b-496d-95f5-5781082b8e6f');</script><noscript>Get the <a href="http://www.widgetbox.com/widget/live-cricket-scores-espn-star-sports">Live Cricket Scores</a> widget and many other <a href="http://www.widgetbox.com/">great free widgets</a> at <a href="http://www.widgetbox.com">Widgetbox</a>! Not seeing a widget? (<a href="http://docs.widgetbox.com/using-widgets/installing-widgets/why-cant-i-see-my-widget/">More info</a>)</noscript>
@@ -36,22 +40,36 @@ window.onload = function() {
 
 
 <%= form_for Comment.new , :remote => true  do |f| %>
-	 <%= f.hidden_field(:user_id, :value => @user.id )  %>
+  <%= f.hidden_field(:user_id, :value => @user.id )  %>
 
-	<%= f.label :content, "Comment" %><br />
-	<%= f.text_area :content, :rows => 2 , :class => "chatbox"%><br />
-	<%= f.submit "Add comment" %>
+  <%= f.label :content, "Comment" %><br />
+  <%= f.text_area :content, :rows => 2 , :class => "chatbox"%><br />
+  <%= f.submit "Add comment" %>
 <% end %>
 
-         <span id="update_form">
-<% form_for Comment.new , :remote => true , :url => { :action => "update" } do |f| %>
- 
-<% if @last_comment.nil? %>
-           <%= f.hidden_field(:time , :value => 0) %>
-      <% else %>
-  <%= f.hidden_field(:time , :value => @last_comment.created_at) %>
-           <% end %>
-     
-        <%= f.submit "update chats" , :id => "comment_update" %>
-<% end %>
-       </span>
+<span id="update_form">
+  <% form_for Comment.new , :remote => true , :url => { :action => "update" } do |f| %>
+
+    <% if @last_comment_time.nil? %>
+      <%= f.hidden_field(:time , :value => 0) %>
+    <% else %>
+      <%= f.hidden_field(:last_time , :value => @last_comment_time) %>
+    <% end %>
+
+    <%= f.submit "update chats" , :id => "comment_update" %>
+  <% end %>
+</span>
+
+
+<span id="more form">
+  <% form_for Comment.new , :remote => true , :url => { :action => "more" } do |f| %>
+
+    <% if @last_comment_time.nil? %>
+      <%= f.hidden_field(:time , :value => 0) %>
+    <% else %>
+      <%= f.hidden_field(:first_time , :value => @first_comment_time) %>
+    <% end %>
+
+    <%= f.submit "more chats" , :id => "more_chats" %>
+  <% end %>
+</span>

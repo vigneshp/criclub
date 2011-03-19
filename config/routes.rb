@@ -1,7 +1,8 @@
 CommentsApp::Application.routes.draw do |map|
   resources :users
 map.connect '/comments/update', :controller => 'comments', :action => 'update'
-
+map.connect '/comments/more', :controller => 'comments', :action => 'more'
+match 'users/:id/edit' => 'users#edit'
   resources :comments
  # match "/comments/" => "comments#{index}"
 #  :comment => "comment#index"
