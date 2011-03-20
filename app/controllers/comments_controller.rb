@@ -97,10 +97,13 @@ class CommentsController < ApplicationController
     end
   
     @comments = Comment.find(:all, :order =>'created_at' , :limit => 20)
-    
-    unless @comments.nil?
+
+    if @comments.nil?
     @last_comment_time=@comments.last.created_at;
     @first_comment_time = @comments.first.created_at ;
+    else
+      @last_comment_time =0;
+      @first_comment_time =0;
     end
   #  logger.info(@last_comment_time)
   #  logger.info(@first_comment_time)
@@ -114,9 +117,10 @@ class CommentsController < ApplicationController
   end
   
   def create
-
-   if User.where(:extra2 => params[:comment][:user_id]).first.blocked == "1"
-   flash[:notice] = "sorry you have been blocked" and return
+   @tempuser = User.where(:extra2 => params[:comment][:user_id])
+     if @tempuser.first.blocked == "1"
+   #blocked users
+      flash[:notice] = "sorry you have been blocked" and return
    else
     if params[:comment][:content].lstrip.rstrip == ""
       flash[:notice] = "No Blank commenting"
@@ -147,18 +151,26 @@ class CommentsController < ApplicationController
 
   def update
     logger.info(params[:comment][:last_time])
-    @last_time = Time.parse(params[:comment][:last_time])
-    logger.info(@last_time)
-    @comments = Comment.all
-  # change here
-
-    #@comments = Comment.where('created_at > '+@last_time.to_s)
-    
-    @last_comment_time = @comments.first.created_at if @comments.nil?
-    
     @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
-
-    
+    if params[:comment][:last_time]== "0"
+       @comments = Comment.find(:all, :order =>'created_at' , :limit => 20)
+       logger.info("last_comment_time")
+      if @comments.nil?
+         @last_comment_time = "0";
+          logger.info(@last_comment_time)
+        else
+           @last_comment_time=@comments.last.created_at;
+          logger.info(@last_comment_time)
+        end
+        
+        logger.info("|||||||||||||||||||")
+    else
+      @last_time = Time.parse(params[:comment][:last_time])
+      #   logger.info(@last_time)
+      #   @comments = Comment.all
+      @comments = Comment.where('created_at > ?',@last_time , :order => 'created_at')
+      @last_comment_time = @comments.last.created_at
+    end
     respond_to do |format|
       format.html { redirect_to comments_path }
       format.js

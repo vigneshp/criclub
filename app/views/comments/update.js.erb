@@ -3,10 +3,9 @@
 # and open the template in the editor.
 %>
 
-<% if !(@last_comment_time.nil?)  %>
+<% if @last_comment_time != "0"  %>
 $("#update_form").html('<%= form_for Comment.new , :remote => true , :url => { :action => "update" } do |f| %> <%= f.hidden_field(:last_time , :value => @last_comment_time) %><%= f.submit "update chats" , :id => "comment_update" %> <% end %>') ;
-/*$("#comment-notice").html('<div class="flash notice"><%= escape_javascript(@last_comment_time) %> </div>'); %/
-$("#panditoftheday").html('');
+
 <% end %>
 
 /* put the HTML for pandit of the day */
