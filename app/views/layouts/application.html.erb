@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Criclub</title>
-  <%= stylesheet_link_tag 'application', 'grid' %>
-  <%= javascript_include_tag  "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
-  <%= javascript_include_tag  "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" %>
-  <%= javascript_include_tag "jquery-rails.js" %>
-  <%= javascript_include_tag "delay_and_update.js" %>
-  
-</head>
-<body >
-  <div class="row">
-		<div class="column grid_10"></div>
-    <div id="main" class="column grid_8">
-			
-			<%= yield %>
-		</div>
-	</div>
-<a name='bottom'>&nbsp;</a>
-</body>
+  <head>
+    <title>Criclub</title>
+    <%= stylesheet_link_tag 'application', 'grid' %>
+    <%= javascript_include_tag  "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" %>
+    <%= javascript_include_tag  "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" %>
+    <%= javascript_include_tag "jquery-rails.js" %>
+    <%= javascript_include_tag "delay_and_update.js" %>
+
+  </head>
+  <body >
+    <div class="row">
+      <div class="column grid_10"></div>
+      <div id="main" class="column grid_8">
+
+        <%= yield %>
+      </div>
+    </div>
+    <a name='bottom'>&nbsp;</a>
+  </body>
 </html>

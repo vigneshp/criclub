@@ -3,24 +3,23 @@
 # and open the template in the editor.
 %>
 
-<% if !(@first_comment_time.nil?)  %>
-
-$("#update_form").html('<%= form_for Comment.new , :remote => true , :url => { :action => "more" } do |f| %> <%= f.hidden_field(:first_time , :value => @first_comment_time) %><%= f.submit "More Chats" , :id => "more_chats" %> <% end %>')
+<% if @last_comment_time != "0"  %>
+  $("#more_form").html('<%= form_for Comment.new , :remote => true , :url => { :action => "more" } do |f| %> <%= f.hidden_field(:first_time , :value => @first_comment_time) %><%= f.submit "more chats" , :id => "more_chats" %> <% end %>') ;
 
 <% end %>
 
 <%  @comments.each  do |@comment| %>
 
-/* Add the new comment to the bottom of the comments list */
+  /* Add the new comment to the bottom of the comments list */
 
-<% unless @comment.nil? %>
-$("#comments").prepend("<%= escape_javascript(render(@comment))  %>");
+  <% unless @comment.nil? %>
+    $("#comments").prepend("<%= escape_javascript(render(@comment))  %>");
 
-/* Highlight the new comment */
-$("#comment_<%= @comment.id %>").effect("highlight", {}, 3000);
+    /* Highlight the new comment */
+    $("#comment_<%= @comment.id %>").effect("highlight", {}, 3000);
 
-/* Reset the comment form */
-$("#new_comment")[0].reset();
-<% end %>
+    /* Reset the comment form */
+    $("#new_comment")[0].reset();
+  <% end %>
 
 <% end %>

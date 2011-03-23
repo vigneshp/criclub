@@ -42,7 +42,7 @@ class CommentsController < ApplicationController
       if !session[:at].nil?
         return #  index #     render :controller=>"comment" , :action => "index"
       else
-   #     logger.info("create inside..............................." + params[:code])
+        #     logger.info("create inside..............................." + params[:code])
         mogli_client = Mogli::Client.create_from_code_and_authenticator(params[:code],session_authenticator)
         logger.info("inside creae")
         session[:at]=mogli_client.access_token
@@ -65,7 +65,7 @@ class CommentsController < ApplicationController
       if session[:at].nil?
         #  index #     render :controller=>"comment" , :action => "index"
 
-      #  logger.info("create inside..............................." + params[:code])
+        #  logger.info("create inside..............................." + params[:code])
         mogli_client = Mogli::Client.create_from_code_and_authenticator(params[:code],session_authenticator)
         logger.info("inside creae")
         session[:at]=mogli_client.access_token
@@ -99,16 +99,16 @@ class CommentsController < ApplicationController
     @comments = Comment.find(:all, :order =>'created_at' , :limit => 20)
 
     if @comments.nil?
-    @last_comment_time=@comments.last.created_at;
-    @first_comment_time = @comments.first.created_at ;
-    else
       @last_comment_time =0;
       @first_comment_time =0;
+    else
+      @last_comment_time=@comments.last.created_at;
+      @first_comment_time = @comments.first.created_at ;
     end
-  #  logger.info(@last_comment_time)
-  #  logger.info(@first_comment_time)
+    #  logger.info(@last_comment_time)
+    #  logger.info(@first_comment_time)
     
-      #logger.info(@last_comment.created_at.to_s);
+    #logger.info(@last_comment.created_at.to_s);
     
     respond_to do |format|
       format.html # index.html.erb
@@ -117,22 +117,28 @@ class CommentsController < ApplicationController
   end
   
   def create
-   @tempuser = User.where(:extra2 => params[:comment][:user_id])
-     if @tempuser.first.blocked == "1"
-   #blocked users
+    @tempuser = User.where(:extra2 => params[:comment][:user_id])
+
+    ## CHECK FOR BLOCKED TIME AND CURRENT TIME ##
+    if @tempuser.first.blocked == "1" #and @tempuser.first.blocked_time+@tempuser.first.blocked_period  <
+      #blocked users
       flash[:notice] = "sorry you have been blocked" and return
-   else
-    if params[:comment][:content].lstrip.rstrip == ""
-      flash[:notice] = "No Blank commenting"
     else
-      @comment = Comment.create!(:content => params[:comment][:content].lstrip.rstrip , :user_id => params[:comment][:user_id])
-      @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
-      # @user_id = (User.where(:extra2 => params[:comment][:user_id])).first.name
-      # logger.info(@user1.first.name+"////////////////////////////");
-      #logger.info("--------------------------")
-      flash[:notice] = "Thanks for commenting!"
+      if params[:comment][:content].lstrip.rstrip == ""
+        flash[:notice] = "No Blank commenting"
+      else
+        if Comment.find(:first , :conditions => ["user_id = ?",params[:comment][:user_id]] , :order => 'created_at desc').content == params[:comment][:content].lstrip.rstrip
+          flash[:notice] = "Your Last comment was also same"
+      else
+        @comment = Comment.create!(:content => params[:comment][:content].lstrip.rstrip , :user_id => params[:comment][:user_id])
+        @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
+        # @user_id = (User.where(:extra2 => params[:comment][:user_id])).first.name
+        # logger.info(@user1.first.name+"////////////////////////////");
+        #logger.info("--------------------------")
+        flash[:notice] = "Thanks for commenting!"
+      end
+      end
     end
-   end
 
     respond_to do |format|
       format.html { redirect_to comments_path }
@@ -149,26 +155,31 @@ class CommentsController < ApplicationController
     end
   end
 
+
+  #add we should not take the comments posted by him coz it ll already be present there
   def update
     logger.info(params[:comment][:last_time])
     @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
     if params[:comment][:last_time]== "0"
-       @comments = Comment.find(:all, :order =>'created_at' , :limit => 20)
-       logger.info("last_comment_time")
+      @comments = Comment.find(:all,:conditions => ["user_id != ?",@user.id] ,:order =>'created_at' , :limit => 20)
+      logger.info("last_comment_time")
       if @comments.nil?
-         @last_comment_time = "0";
-          logger.info(@last_comment_time)
-        else
-           @last_comment_time=@comments.last.created_at;
-          logger.info(@last_comment_time)
-        end
-        
-        logger.info("|||||||||||||||||||")
+        @last_comment_time = "0";
+        logger.info(@last_comment_time)
+      else
+        @last_comment_time=@comments.last.created_at;
+        logger.info(@last_comment_time)
+      end
+      logger.info("|||||||||||||||||||")
     else
       @last_time = Time.parse(params[:comment][:last_time])
-      #   logger.info(@last_time)
+      logger.info(@last_time)
+      logger.info("++++++++++")
       #   @comments = Comment.all
-      @comments = Comment.where('created_at > ?',@last_time , :order => 'created_at')
+
+      ## SORT BY CREATEDAT ##
+      #@comments = Comment.where('created_at > ?',@last_time)
+      @comments = Comment.find(:all, :conditions => ["created_at > ? and user_id != ?",@last_time,@user.id] ,:order => 'created_at')
       @last_comment_time = @comments.last.created_at
     end
     respond_to do |format|
@@ -179,14 +190,31 @@ class CommentsController < ApplicationController
 
   def more
     logger.info(params[:comment][:first_time])
-    @last_time = Time.parse(params[:comment][:last_time])
-    logger.info(@last_time)
-    @comments  = Comment.all
-#change here
-
-    @first_comment_time = @comments.last.created_at if @comments.nil?
-
     @user = Mogli::User.find("me",Mogli::Client.new(session[:at]))
+    if params[:comment][:first_time]== "0"
+      @comments = Comment.find(:all,:conditions => ["user_id != ?",@user.id] ,:order =>'created_at desc' , :limit => 20)
+      logger.info("first_comment_time")
+      if @comments.nil?
+        @first_comment_time = "0";
+        logger.info(@first_comment_time)
+      else
+        @first_comment_time=@comments.first.created_at;
+        logger.info(@first_comment_time)
+      end
+
+      logger.info("|||||||||||||||||||")
+    else
+      @last_time = Time.parse(params[:comment][:first_time])
+      logger.info(@first_time)
+      logger.info("++++++++++")
+      #   @comments = Comment.all
+
+      ## SORT IN REVERSE ##
+      #@comments = Comment.where('created_at < ?',@last_time)
+      @comments = Comment.find(:all, :conditions => ["created_at < ? and user_id != ?",@first_time,@user.id] ,:order => 'created_at desc' ,:limit => 20)
+      @last_comment_time = @comments.first.created_at
+    end
+    
     respond_to do |format|
       format.html { redirect_to comments_path }
       format.js

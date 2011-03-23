@@ -4,7 +4,7 @@
 %>
 
 <% if @last_comment_time != "0"  %>
-$("#update_form").html('<%= form_for Comment.new , :remote => true , :url => { :action => "update" } do |f| %> <%= f.hidden_field(:last_time , :value => @last_comment_time) %><%= f.submit "update chats" , :id => "comment_update" %> <% end %>') ;
+  $("#update_form").html('<%= form_for Comment.new , :remote => true , :url => { :action => "update" } do |f| %> <%= f.hidden_field(:last_time , :value => @last_comment_time) %><%= f.submit "update chats" , :id => "comment_update" %> <% end %>') ;
 
 <% end %>
 
@@ -12,20 +12,20 @@ $("#update_form").html('<%= form_for Comment.new , :remote => true , :url => { :
 <%  @comments.each  do |@comment| %>
 
 
-/* Replace the count of comments
-$("#comments_count").html("<%= pluralize(Comment.count, 'Comment') %>");
- */
-/* Add the new comment to the bottom of the comments list */
+  /* Replace the count of comments
+  $("#comments_count").html("<%= pluralize(Comment.count, 'Comment') %>");
+  */
+  /* Add the new comment to the bottom of the comments list */
 
-<% unless @comment.nil? %>
-$("#comments").append("<%= escape_javascript(render(@comment))  %>");
+  <% unless @comment.nil? %>
+    $("#comments").append("<%= escape_javascript(render(@comment))  %>");
 
-/* Highlight the new comment */
-$("#comment_<%= @comment.id %>").effect("highlight", {}, 3000);
+    /* Highlight the new comment */
+    $("#comment_<%= @comment.id %>").effect("highlight", {}, 3000);
 
-/* Reset the comment form */
-$("#new_comment")[0].reset();
-<% end %>
+    /* Reset the comment form */
+    $("#new_comment")[0].reset();
+  <% end %>
 
 <% end %>
 

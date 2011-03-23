@@ -41,36 +41,26 @@
 
 <%= form_for Comment.new , :remote => true  do |f| %>
   <%= f.hidden_field(:user_id, :value => @user.id )  %>
-
   <%= f.label :content, "Comment" %><br />
   <%= f.text_area :content, :rows => 2 , :class => "chatbox"%><br />
   <%= f.submit "Add comment" %>
 <% end %>
 
-  <span id="update_form">
-    <% form_for Comment.new , :remote => true , :url => { :action => "update" } do |f| %>
+<span id="update_form">
+  <% form_for Comment.new , :remote => true , :url => { :action => "update" } do |f| %>
+    <%= f.hidden_field(:last_time , :value => @last_comment_time) %>
+    <%= f.submit "update chats" , :id => "comment_update" %>
+  <% end %>
+</span>
 
-      <% if @last_comment_time.nil? %>
-        <%= f.hidden_field(:last_time , :value => @last_comment_time) %>
-      <% else %>
-        <%= f.hidden_field(:last_time , :value => 0) %>
-      <% end %>
 
-      <%= f.submit "update chats" , :id => "comment_update" %>
-    <% end %>
-  </span>
-    
+<span id="more form">
+  <% form_for Comment.new , :remote => true , :url => { :action => "more" } do |f| %>
 
-  <span id="more form">
-    <% form_for Comment.new , :remote => true , :url => { :action => "more" } do |f| %>
 
-      <% if @last_comment_time.nil? %>
-        <%= f.hidden_field(:first_time , :value => @first_comment_time) %>
+    <%= f.hidden_field(:first_time , :value => @first_comment_time) %>
 
-      <% else %>
-        <%= f.hidden_field(:first_time , :value => 0) %>
-      <% end %>
 
-      <%= f.submit "more chats" , :id => "more_chats" %>
-    <% end %>
-  </span>
+    <%= f.submit "more chats" , :id => "more_chats" %>
+  <% end %>
+</span>
